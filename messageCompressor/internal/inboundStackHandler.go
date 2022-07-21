@@ -24,8 +24,8 @@ func (self *InboundStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *InboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
+func (self *InboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
+	return nil, false, nil
 }
 
 func (self *InboundStackHandler) close() error {
@@ -50,7 +50,10 @@ func NewInboundStackHandler() (*InboundStackHandler, error) {
 	}, nil
 }
 
-func (self *InboundStackHandler) MapReadWriterSize(ctx context.Context, size goprotoextra.ReadWriterSize) (goprotoextra.ReadWriterSize, error) {
+func (self *InboundStackHandler) MapReadWriterSize(
+	ctx context.Context,
+	rws goprotoextra.ReadWriterSize,
+) (goprotoextra.ReadWriterSize, error) {
 	if self.errorState != nil {
 		return nil, self.errorState
 	}
@@ -64,25 +67,25 @@ func (self *InboundStackHandler) MapReadWriterSize(ctx context.Context, size gop
 		return nil, goerrors.InvalidState
 	}
 	b := [8]byte{}
-	_, err := size.Read(b[:])
+	_, err := rws.Read(b[:])
 	if err != nil {
 		self.errorState = err
 		return nil, self.errorState
 	}
 	uncompressedLength := int64(binary.LittleEndian.Uint64(b[:]))
-	_, err = io.Copy(self.decompressorStream, size)
+	_, err = io.Copy(self.decompressorStream, rws)
 	if err != nil {
 		self.errorState = err
 		return nil, self.errorState
 	}
 
-	_, err = io.CopyN(size, self.decompressor, uncompressedLength)
+	_, err = io.CopyN(rws, self.decompressor, uncompressedLength)
 	if err != nil {
 		self.errorState = err
 		return nil, self.errorState
 	}
 
-	return size, nil
+	return rws, nil
 }
 
 func (self *InboundStackHandler) Destroy() error {

@@ -3,6 +3,7 @@ package internal
 import (
 	"bytes"
 	"encoding/binary"
+	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goerrors"
 	"github.com/bhbosman/gomessageblock"
 	"github.com/bhbosman/goprotoextra"
@@ -12,7 +13,7 @@ type OnStateCallback func(onNext func(data []byte) error) (canContinue bool, err
 
 type InboundStackHandler struct {
 	Rw           *gomessageblock.ReaderWriter
-	ErrorState   error
+	errorState   error
 	Marker       [4]byte
 	currentState OnStateCallback
 }
@@ -22,10 +23,11 @@ func (self *InboundStackHandler) GetAdditionalBytesIncoming() int {
 }
 
 func NewInboundStackHandler(
-	marker [4]byte) *InboundStackHandler {
+	marker [4]byte,
+) RxHandlers.IRxNextStackHandler {
 	result := &InboundStackHandler{
 		Rw:           gomessageblock.NewReaderWriter(),
-		ErrorState:   nil,
+		errorState:   nil,
 		Marker:       marker,
 		currentState: nil,
 	}
@@ -37,8 +39,8 @@ func (self *InboundStackHandler) GetAdditionalBytesSend() int {
 	return 0
 }
 
-func (self *InboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
+func (self *InboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
+	return nil, false, nil
 }
 
 func (self *InboundStackHandler) Close() error {
@@ -46,28 +48,33 @@ func (self *InboundStackHandler) Close() error {
 }
 
 func (self *InboundStackHandler) OnError(err error) {
-	self.ErrorState = err
+	self.errorState = err
 }
 
 func (self *InboundStackHandler) NextReadWriterSize(
 	rws goprotoextra.ReadWriterSize,
 	onNext func(rws goprotoextra.ReadWriterSize) error,
-	_ func(size int) error) error {
-
-	if self.ErrorState != nil {
-		return self.ErrorState
+	_ func(interface{}) error,
+	_ func(size int) error,
+) error {
+	if self.errorState != nil {
+		return self.errorState
 	}
 	err := self.Rw.SetNext(rws)
 	if err != nil {
 		return err
 	}
-	return self.inboundState(func(dataBlock []byte) error {
-		return onNext(gomessageblock.NewReaderWriterBlock(dataBlock))
-	})
+	return self.inboundState(
+		func(dataBlock []byte) error {
+			return onNext(gomessageblock.NewReaderWriterBlock(dataBlock))
+		},
+	)
 }
 
 func (self *InboundStackHandler) OnComplete() {
-
+	if self.errorState == nil {
+		self.errorState = RxHandlers.RxHandlerComplete
+	}
 }
 
 func (self *InboundStackHandler) OnReadHeader() OnStateCallback {
@@ -76,13 +83,13 @@ func (self *InboundStackHandler) OnReadHeader() OnStateCallback {
 			var p [4]byte
 			_, err := self.Rw.Read(p[:])
 			if err != nil {
-				self.ErrorState = err
-				return false, self.ErrorState
+				self.errorState = err
+				return false, self.errorState
 			}
 			c := bytes.Compare(p[:], self.Marker[:])
 			if c != 0 {
-				self.ErrorState = goerrors.InvalidSignature
-				return false, self.ErrorState
+				self.errorState = goerrors.InvalidSignature
+				return false, self.errorState
 			}
 			self.currentState = self.OnReadLength()
 			return true, nil
@@ -98,8 +105,8 @@ func (self *InboundStackHandler) OnReadLength() OnStateCallback {
 			var p [4]byte
 			_, err := self.Rw.Read(p[:])
 			if err != nil {
-				self.ErrorState = err
-				return false, self.ErrorState
+				self.errorState = err
+				return false, self.errorState
 			}
 			var length = binary.LittleEndian.Uint32(p[:])
 			self.currentState = self.OnReadData(length)
@@ -115,8 +122,8 @@ func (self *InboundStackHandler) OnReadData(length uint32) OnStateCallback {
 			dataBlock := make([]byte, length)
 			_, err := self.Rw.Read(dataBlock)
 			if err != nil {
-				self.ErrorState = err
-				return false, self.ErrorState
+				self.errorState = err
+				return false, self.errorState
 			}
 			err = onNext(dataBlock)
 			if err != nil {

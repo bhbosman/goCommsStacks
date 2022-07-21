@@ -2,29 +2,30 @@ package internal
 
 import (
 	"context"
+	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goerrors"
 	"github.com/bhbosman/goprotoextra"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 )
 
-type InboundStackHandler struct {
+type inboundStackHandler struct {
 	errorState error
 	logger     *zap.Logger
 }
 
-func (self *InboundStackHandler) ErrorState() error {
+func (self *inboundStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *InboundStackHandler) ReadMessage(_ interface{}) error {
+func (self *inboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
 	if self.errorState != nil {
-		return self.errorState
+		return nil, false, self.errorState
 	}
-	return nil
+	return nil, false, nil
 }
 
-func NewInboundStackHandler(logger *zap.Logger) (*InboundStackHandler, error) {
+func NewInboundStackHandler(logger *zap.Logger) (RxHandlers.IRxMapStackHandler, error) {
 	var err error = nil
 	if logger == nil {
 		err = multierr.Append(err, goerrors.InvalidParam)
@@ -32,15 +33,15 @@ func NewInboundStackHandler(logger *zap.Logger) (*InboundStackHandler, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &InboundStackHandler{
+	return &inboundStackHandler{
 		errorState: nil,
 		logger:     logger,
 	}, nil
 }
 
-func (self *InboundStackHandler) MapReadWriterSize(
+func (self *inboundStackHandler) MapReadWriterSize(
 	ctx context.Context,
-	size goprotoextra.ReadWriterSize) (goprotoextra.ReadWriterSize, error) {
+	rws goprotoextra.ReadWriterSize) (goprotoextra.ReadWriterSize, error) {
 	if self.errorState != nil {
 		return nil, self.errorState
 	}
@@ -48,5 +49,5 @@ func (self *InboundStackHandler) MapReadWriterSize(
 		self.errorState = ctx.Err()
 		return nil, ctx.Err()
 	}
-	return size, nil
+	return rws, nil
 }

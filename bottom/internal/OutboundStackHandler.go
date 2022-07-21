@@ -17,8 +17,8 @@ func (self *OutboundStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *OutboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
+func (self *OutboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
+	return nil, false, nil
 }
 
 func NewOutboundStackHandler(logger *zap.Logger) (*OutboundStackHandler, error) {
@@ -34,7 +34,10 @@ func NewOutboundStackHandler(logger *zap.Logger) (*OutboundStackHandler, error) 
 	}, nil
 }
 
-func (self *OutboundStackHandler) MapReadWriterSize(ctx context.Context, size goprotoextra.ReadWriterSize) (goprotoextra.ReadWriterSize, error) {
+func (self *OutboundStackHandler) MapReadWriterSize(
+	ctx context.Context,
+	rws goprotoextra.ReadWriterSize,
+) (goprotoextra.ReadWriterSize, error) {
 	if self.errorState != nil {
 		return nil, self.errorState
 	}
@@ -42,5 +45,5 @@ func (self *OutboundStackHandler) MapReadWriterSize(ctx context.Context, size go
 		self.errorState = ctx.Err()
 		return nil, ctx.Err()
 	}
-	return size, nil
+	return rws, nil
 }

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/common"
+	"github.com/bhbosman/gocomms/netBase/internal"
 	"github.com/bhbosman/gomessageblock"
 	"github.com/reactivex/rxgo/v2"
 	"github.com/stretchr/testify/assert"
@@ -21,13 +22,13 @@ func TestProvideBottomStack(t *testing.T) {
 		}{}
 
 		fxApp := fxtest.New(t,
-			fx.Provide(common.ProvideRxOptions),
+			fx.Provide(internal.ProvideRxOptions),
 			fx.Provide(func() (context.Context, context.CancelFunc) { return context.WithCancel(context.Background()) }),
 			fx.Provide(func(cancelFunc context.CancelFunc) model.ConnectionCancelFunc {
 				return func(context string, inbound bool, err error) { cancelFunc() }
 			}),
 			fx.Provide(func() *zap.Logger { return logger }),
-			ProvideBottomStack(),
+			Provide(),
 			fx.Populate(&out))
 		assert.NoError(t, fxApp.Err())
 		return out.Data[0], fxApp.Err()
@@ -42,7 +43,7 @@ func TestProvideBottomStack(t *testing.T) {
 				definition, _ := result()
 				ch := make(chan rxgo.Item)
 				channel := rxgo.FromChannel(ch)
-				_, outCh, err := definition.GetPipeDefinition()(nil, nil, channel)
+				outCh, err := definition.GetPipeDefinition()(nil, nil, channel)
 				assert.NoError(t, err)
 				assert.NotNil(t, outCh)
 
@@ -97,7 +98,7 @@ func TestProvideBottomStack(t *testing.T) {
 		definition, _ := result()
 		ch := make(chan rxgo.Item)
 		channel := rxgo.FromChannel(ch)
-		_, _, err = definition.GetPipeDefinition()(nil, nil, channel)
+		_, err = definition.GetPipeDefinition()(nil, nil, channel)
 		assert.Error(t, err)
 		close(ch)
 	})
@@ -109,7 +110,7 @@ func TestProvideBottomStack(t *testing.T) {
 		definition, _ := result()
 		ch := make(chan rxgo.Item)
 		channel := rxgo.FromChannel(ch)
-		_, _, err = definition.GetPipeDefinition()(nil, nil, channel)
+		_, err = definition.GetPipeDefinition()(nil, nil, channel)
 		assert.Error(t, err)
 		close(ch)
 	})

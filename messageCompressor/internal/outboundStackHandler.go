@@ -24,8 +24,8 @@ func (self *OutboundStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *OutboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
+func (self *OutboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
+	return nil, false, nil
 }
 
 func NewOutboundStackHandler() (*OutboundStackHandler, error) {
@@ -42,7 +42,10 @@ func NewOutboundStackHandler() (*OutboundStackHandler, error) {
 	}, nil
 }
 
-func (self *OutboundStackHandler) MapReadWriterSize(ctx context.Context, size goprotoextra.ReadWriterSize) (goprotoextra.ReadWriterSize, error) {
+func (self *OutboundStackHandler) MapReadWriterSize(
+	ctx context.Context,
+	rws goprotoextra.ReadWriterSize,
+) (goprotoextra.ReadWriterSize, error) {
 	if self.errorState != nil {
 		return nil, self.errorState
 	}
@@ -55,7 +58,7 @@ func (self *OutboundStackHandler) MapReadWriterSize(ctx context.Context, size go
 	if self.isClosed {
 		return nil, goerrors.InvalidState
 	}
-	uncompressedSize, err := io.Copy(self.compression, size)
+	uncompressedSize, err := io.Copy(self.compression, rws)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +80,7 @@ func (self *OutboundStackHandler) MapReadWriterSize(ctx context.Context, size go
 	if ctx.Err() != nil {
 		return nil, err
 	}
-	_, err = size.Write(b[:])
+	_, err = rws.Write(b[:])
 	if err != nil {
 		return nil, err
 	}
@@ -85,12 +88,12 @@ func (self *OutboundStackHandler) MapReadWriterSize(ctx context.Context, size go
 	if ctx.Err() != nil {
 		return nil, err
 	}
-	_, err = io.Copy(size, self.compressionStream)
+	_, err = io.Copy(rws, self.compressionStream)
 	if err != nil {
 		return nil, err
 	}
 
-	return size, nil
+	return rws, nil
 }
 
 func (self *OutboundStackHandler) Destroy() error {

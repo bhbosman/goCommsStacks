@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/bhbosman/goCommsStacks/messageNumber/common"
+	"github.com/bhbosman/goCommsDefinitions"
 	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	common2 "github.com/bhbosman/gocomms/common"
@@ -12,18 +12,23 @@ import (
 func Outbound(ConnectionCancelFunc model.ConnectionCancelFunc, logger *zap.Logger, opts ...rxgo.Option) common2.BoundResult {
 	return func() (common2.IStackBoundDefinition, error) {
 		return common2.NewBoundDefinition(
-				func(stackData common2.IStackCreateData, pipeData common2.IPipeCreateData, obs rxgo.Observable) (string, rxgo.Observable, error) {
+				func(stackData common2.IStackCreateData, pipeData common2.IPipeCreateData, obs rxgo.Observable) (rxgo.Observable, error) {
 					stackHandler, err := NewOutboundStackHandler()
 					if err != nil {
-						return common.StackName, nil, err
+						return nil, err
 					}
 
-					mapHandler, err := RxHandlers.NewRxMapHandler(common.StackName, ConnectionCancelFunc, logger, stackHandler)
+					mapHandler, err := RxHandlers.NewRxMapHandler(
+						goCommsDefinitions.MessageNumberStackName,
+						ConnectionCancelFunc,
+						logger,
+						stackHandler,
+					)
 					if err != nil {
-						return common.StackName, nil, err
+						return nil, err
 					}
 
-					return common.StackName, obs.Map(mapHandler.Handler, opts...), nil
+					return obs.Map(mapHandler.Handler, opts...), nil
 				},
 				nil),
 			nil

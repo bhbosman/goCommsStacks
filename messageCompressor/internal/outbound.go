@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/bhbosman/goCommsStacks/messageCompressor/common"
+	"github.com/bhbosman/goCommsDefinitions"
 	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	common3 "github.com/bhbosman/gocomms/common"
@@ -10,22 +10,34 @@ import (
 	"go.uber.org/zap"
 )
 
-func Outbound(ConnectionCancelFunc model.ConnectionCancelFunc, logger *zap.Logger, opts ...rxgo.Option) func() (common3.IStackBoundDefinition, error) {
+func Outbound(
+	ConnectionCancelFunc model.ConnectionCancelFunc,
+	logger *zap.Logger,
+	opts ...rxgo.Option,
+) func() (common3.IStackBoundDefinition, error) {
 	return func() (common3.IStackBoundDefinition, error) {
 		return common3.NewBoundDefinition(
-				func(stackData common3.IStackCreateData, pipeData common3.IPipeCreateData, obs rxgo.Observable) (string, rxgo.Observable, error) {
+				func(
+					stackData common3.IStackCreateData,
+					pipeData common3.IPipeCreateData,
+					obs rxgo.Observable,
+				) (rxgo.Observable, error) {
 					if pd, ok := pipeData.(*OutboundStackHandler); ok {
-						mapHandler, err := RxHandlers.NewRxMapHandler(common.StackName, ConnectionCancelFunc, logger, pd)
+						mapHandler, err := RxHandlers.NewRxMapHandler(
+							goCommsDefinitions.CompressionStackName,
+							ConnectionCancelFunc,
+							logger,
+							pd,
+						)
 						if err != nil {
-							return common.StackName, nil, err
+							return nil, err
 						}
 
-						return common.StackName, obs.Map(mapHandler.Handler, opts...), nil
+						return obs.Map(mapHandler.Handler, opts...), nil
 					}
-					return "", nil, goerrors.InvalidType
-
+					return nil, goerrors.InvalidType
 				},
-				OutboundPipeState(common.StackName)),
+				OutboundPipeState(goCommsDefinitions.CompressionStackName)),
 			nil
 	}
 }
