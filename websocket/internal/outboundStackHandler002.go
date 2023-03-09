@@ -1,9 +1,9 @@
 package internal
 
 import (
+	wsmsg2 "github.com/bhbosman/goCommsStacks/webSocketMessages/wsmsg"
 	"github.com/bhbosman/gocommon/stream"
 	"github.com/bhbosman/gocomms/RxHandlers"
-	wsmsg2 "github.com/bhbosman/gocomms/common/webSocketMessages/wsmsg"
 	"github.com/bhbosman/gomessageblock"
 	"github.com/bhbosman/goprotoextra"
 	"github.com/gobwas/ws"
@@ -13,7 +13,7 @@ import (
 
 type OutboundStackHandler002 struct {
 	errorState error
-	stackData  *StackData
+	stackData  *Data
 }
 
 func (self *OutboundStackHandler002) GetAdditionalBytesIncoming() int {
@@ -24,11 +24,11 @@ func (self *OutboundStackHandler002) GetAdditionalBytesSend() int {
 	return self.stackData.connWrapper.BytesWritten
 }
 
-func (self *OutboundStackHandler002) ReadMessage(_ interface{}) error {
-	return nil
+func (self *OutboundStackHandler002) ReadMessage(_ interface{}) (interface{}, bool, error) {
+	return nil, false, nil
 }
 
-func NewOutboundStackHandler002(stackData *StackData) (*OutboundStackHandler002, error) {
+func NewOutboundStackHandler002(stackData *Data) (RxHandlers.IRxNextStackHandler, error) {
 	return &OutboundStackHandler002{
 		stackData: stackData,
 	}, nil
@@ -39,18 +39,18 @@ func (self *OutboundStackHandler002) Close() error {
 }
 
 func (self *OutboundStackHandler002) SendData(data interface{}) {
-	if self.stackData.onOutBoundSendData != nil {
-		self.stackData.onOutBoundSendData(data)
+	if self.stackData.OutboundHandler != nil {
+		self.stackData.OutboundHandler.OnSendData(data)
 	}
 }
 
-func (self *OutboundStackHandler002) SendRws(size goprotoextra.ReadWriterSize) {
+func (self *OutboundStackHandler002) SendRws(rws goprotoextra.ReadWriterSize) {
 	if self.errorState != nil {
 		return
 	}
-	switch v := size.(type) {
+	switch v := rws.(type) {
 	case *gomessageblock.ReaderWriter:
-		messageWrapper, err := stream.UnMarshal(v, nil, nil, nil, nil)
+		messageWrapper, err := stream.UnMarshal(v)
 		if err != nil {
 			return
 		}
@@ -80,14 +80,16 @@ func (self *OutboundStackHandler002) OnError(err error) {
 }
 
 func (self *OutboundStackHandler002) NextReadWriterSize(
-	size goprotoextra.ReadWriterSize,
+	rws goprotoextra.ReadWriterSize,
 	_ func(rws goprotoextra.ReadWriterSize) error,
-	_ func(size int) error) error {
+	_ func(interface{}) error,
+	_ func(size int) error,
+) error {
 
 	if self.errorState != nil {
 		return self.errorState
 	}
-	self.SendRws(size)
+	self.SendRws(rws)
 
 	return self.errorState
 }

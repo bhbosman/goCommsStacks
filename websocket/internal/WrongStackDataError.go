@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/bhbosman/goCommsStacks/websocket/common"
+	"github.com/bhbosman/goCommsDefinitions"
 	"github.com/bhbosman/gocommon/model"
 	common2 "github.com/bhbosman/gocomms/common"
 	"reflect"
@@ -9,8 +9,8 @@ import (
 
 func WrongStackDataError(connectionType model.ConnectionType, stackData interface{}) error {
 	return common2.NewWrongStackDataType(
-		common.StackName,
+		goCommsDefinitions.WebSocketStackName,
 		connectionType,
-		reflect.TypeOf((*StackData)(nil)),
+		reflect.TypeOf((*Data)(nil)),
 		reflect.TypeOf(stackData))
 }

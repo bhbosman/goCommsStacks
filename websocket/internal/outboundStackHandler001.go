@@ -7,7 +7,7 @@ import (
 
 type OutboundStackHandler001 struct {
 	errorState error
-	StackData  *StackData
+	StackData  *Data
 }
 
 func (self *OutboundStackHandler001) GetAdditionalBytesIncoming() int {
@@ -15,18 +15,18 @@ func (self *OutboundStackHandler001) GetAdditionalBytesIncoming() int {
 }
 
 func (self *OutboundStackHandler001) SendError(err error) {
-	if self.StackData.onMultiOutBoundSendError != nil {
-		self.StackData.onMultiOutBoundSendError(err)
+	if self.StackData.MultiOutBoundHandler != nil {
+		self.StackData.MultiOutBoundHandler.OnError(err)
 	}
 }
 
 func (self *OutboundStackHandler001) GetAdditionalBytesSend() int {
 	return 0
-	//return self.StackData.UpgradedConnection.BytesWrite
+	//return self.data.UpgradedConnection.BytesWrite
 }
 
-func (self *OutboundStackHandler001) ReadMessage(_ interface{}) error {
-	return nil
+func (self *OutboundStackHandler001) ReadMessage(_ interface{}) (interface{}, bool, error) {
+	return nil, false, nil
 }
 
 func (self *OutboundStackHandler001) Close() error {
@@ -37,12 +37,12 @@ func (self *OutboundStackHandler001) SendData(data interface{}) {
 	if self.errorState != nil {
 		return
 	}
-	if self.StackData.onMultiOutBoundSendData != nil {
-		self.StackData.onMultiOutBoundSendData(data)
+	if self.StackData.MultiOutBoundHandler != nil {
+		self.StackData.MultiOutBoundHandler.OnSendData(data)
 	}
 }
 
-func NewOutboundStackHandler001(stackData *StackData) *OutboundStackHandler001 {
+func NewOutboundStackHandler001(stackData *Data) RxHandlers.IRxNextStackHandler {
 	return &OutboundStackHandler001{
 		errorState: nil,
 		StackData:  stackData}
@@ -53,14 +53,15 @@ func (self *OutboundStackHandler001) OnError(err error) {
 }
 
 func (self *OutboundStackHandler001) NextReadWriterSize(
-	size goprotoextra.ReadWriterSize,
+	rws goprotoextra.ReadWriterSize,
 	_ func(rws goprotoextra.ReadWriterSize) error,
+	_ func(interface{}) error,
 	sizeUpDate func(size int) error) error {
 	if self.errorState != nil {
 		return self.errorState
 	}
-	sizeUpDate(size.Size())
-	self.SendData(size)
+	sizeUpDate(rws.Size())
+	self.SendData(rws)
 
 	return self.errorState
 }

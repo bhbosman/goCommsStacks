@@ -1,0 +1,13 @@
+syntax = "proto3";
+import "google/protobuf/descriptor.proto";
+package golang.example.policy;
+
+
+option go_package = "/proto";
+
+message ProtoBufStackMessageInstance{
+  bytes messageData = 1;
+}
+message ProtoBufStackMultiMessage{
+  repeated ProtoBufStackMessageInstance Messages = 1;
+}

@@ -8,7 +8,7 @@ import (
 
 type InboundStackHandler struct {
 	errorState error
-	stackData  *StackData
+	stackData  *Data
 }
 
 func (self *InboundStackHandler) GetAdditionalBytesIncoming() int {
@@ -16,8 +16,8 @@ func (self *InboundStackHandler) GetAdditionalBytesIncoming() int {
 }
 
 func (self *InboundStackHandler) SendError(err error) {
-	if self.stackData.onInBoundSendError != nil {
-		self.stackData.onInBoundSendError(err)
+	if self.stackData.InboundHandler != nil {
+		self.stackData.InboundHandler.OnError(err)
 	}
 }
 
@@ -25,8 +25,8 @@ func (self *InboundStackHandler) GetAdditionalBytesSend() int {
 	return self.stackData.socketDataReceived
 }
 
-func (self *InboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
+func (self *InboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
+	return nil, false, nil
 }
 
 func (self *InboundStackHandler) sendRws(rws goprotoextra.ReadWriterSize) {
@@ -41,8 +41,8 @@ func (self *InboundStackHandler) Close() error {
 }
 
 func (self *InboundStackHandler) SendData(data interface{}) {
-	if self.stackData.onInBoundSendData != nil {
-		self.stackData.onInBoundSendData(data)
+	if self.stackData.InboundHandler != nil {
+		self.stackData.InboundHandler.OnSendData(data)
 	}
 }
 
@@ -53,6 +53,7 @@ func (self *InboundStackHandler) OnError(err error) {
 func (self *InboundStackHandler) NextReadWriterSize(
 	rws goprotoextra.ReadWriterSize,
 	_ func(rws goprotoextra.ReadWriterSize) error,
+	_ func(interface{}) error,
 	_ func(size int) error) error {
 
 	if self.errorState != nil {
@@ -63,14 +64,16 @@ func (self *InboundStackHandler) NextReadWriterSize(
 }
 
 func (self *InboundStackHandler) OnComplete() {
-	self.errorState = RxHandlers.RxHandlerComplete
+	if self.errorState == nil {
+		self.errorState = RxHandlers.RxHandlerComplete
+	}
 }
 
 func (self *InboundStackHandler) Complete() {
 
 }
 
-func NewInboundStackHandler(stackData *StackData) (*InboundStackHandler, error) {
+func NewInboundStackHandler(stackData *Data) (RxHandlers.IRxNextStackHandler, error) {
 	return &InboundStackHandler{
 		errorState: nil,
 		stackData:  stackData,
