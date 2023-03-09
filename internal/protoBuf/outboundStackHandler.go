@@ -37,46 +37,9 @@ func (self *OutboundStackHandler) ReadMessage(msg interface{}) (interface{}, boo
 			v.AddMapData(fmt.Sprintf("ProtoBuf Outbound %v", r.String()), strconv.Itoa(i))
 		}
 		return nil, false, nil
+	default:
+		return nil, false, nil
 	}
-
-	localMarshall := func(m proto.Message) (interface{}, bool, error) {
-		self.addCounter(reflect.TypeOf(m))
-
-		rws, err := stream.Marshall(m)
-		if err != nil {
-			return nil, false, err
-		}
-		return rws, true, nil
-	}
-
-	if messageWrapperArray, ok := msg.([]proto.Message); ok {
-		outData := proto2.ProtoBufStackMultiMessage{
-			Messages: make([]*proto2.ProtoBufStackMessageInstance, 0, len(messageWrapperArray)),
-		}
-		for _, data := range messageWrapperArray {
-			self.addCounter(reflect.TypeOf(data))
-			dataAsBytes, err := stream.Marshall(data)
-			if err != nil {
-				return nil, false, err
-			}
-			flatten, err := dataAsBytes.Flatten()
-			if err != nil {
-				return nil, false, err
-			}
-			outData.Messages = append(outData.Messages, &proto2.ProtoBufStackMessageInstance{MessageData: flatten})
-		}
-		return localMarshall(&outData)
-	}
-
-	if unk, ok := msg.(goprotoextra.IMessageWrapper); ok {
-		msg = unk.Message()
-	}
-	if unk, ok := msg.(proto.Message); ok {
-		return localMarshall(unk)
-	}
-	self.addCounter(reflect.TypeOf(msg))
-
-	return nil, false, nil
 }
 
 func (self *OutboundStackHandler) MapReadWriterSize(
@@ -99,12 +62,12 @@ func (self *OutboundStackHandler) MapReadWriterSize(
 		}
 		return rws, nil
 	}
-	switch rws := unk.(type) {
+	switch v := unk.(type) {
 	case []proto.Message:
 		outData := proto2.ProtoBufStackMultiMessage{
-			Messages: make([]*proto2.ProtoBufStackMessageInstance, 0, len(rws)),
+			Messages: make([]*proto2.ProtoBufStackMessageInstance, 0, len(v)),
 		}
-		for _, data := range rws {
+		for _, data := range v {
 			self.addCounter(reflect.TypeOf(data))
 			dataAsBytes, err := stream.Marshall(data)
 			if err != nil {
@@ -117,8 +80,15 @@ func (self *OutboundStackHandler) MapReadWriterSize(
 			outData.Messages = append(outData.Messages, &proto2.ProtoBufStackMessageInstance{MessageData: flatten})
 		}
 		return localMarshall(&outData)
+	case goprotoextra.IMessageWrapper:
+		if protoMessage, ok := v.(proto.Message); ok {
+			return localMarshall(protoMessage)
+		}
+		return v, nil
+	case proto.Message:
+		return localMarshall(v)
 	default:
-		return rws, nil
+		return v, nil
 	}
 }
 
