@@ -90,9 +90,33 @@ func (self *OutboundStackHandler) MapReadWriterSize(
 		self.errorState = ctx.Err()
 		return nil, ctx.Err()
 	}
-	switch rws := unk.(type) {
-	case goprotoextra.IReadWriterSize:
+	localMarshall := func(m proto.Message) (interface{}, error) {
+		self.addCounter(reflect.TypeOf(m))
+
+		rws, err := stream.Marshall(m)
+		if err != nil {
+			return nil, err
+		}
 		return rws, nil
+	}
+	switch rws := unk.(type) {
+	case []proto.Message:
+		outData := proto2.ProtoBufStackMultiMessage{
+			Messages: make([]*proto2.ProtoBufStackMessageInstance, 0, len(rws)),
+		}
+		for _, data := range rws {
+			self.addCounter(reflect.TypeOf(data))
+			dataAsBytes, err := stream.Marshall(data)
+			if err != nil {
+				return nil, err
+			}
+			flatten, err := dataAsBytes.Flatten()
+			if err != nil {
+				return nil, err
+			}
+			outData.Messages = append(outData.Messages, &proto2.ProtoBufStackMessageInstance{MessageData: flatten})
+		}
+		return localMarshall(&outData)
 	default:
 		return rws, nil
 	}
