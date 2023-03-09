@@ -80,19 +80,19 @@ func (self *InboundStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *InboundStackHandler) ReadMessage(i interface{}) (interface{}, bool, error) {
+func (self *InboundStackHandler) ReadMessage(i interface{}) error {
 	if self.errorState != nil {
-		return nil, false, self.errorState
+		return self.errorState
 	}
 	switch v := i.(type) {
 	case *model2.PublishRxHandlerCounters:
 		for r, i := range self.counterMap {
 			v.AddMapData(fmt.Sprintf("ProtoBuf Inbound %v", r.String()), strconv.Itoa(i))
 		}
-		return nil, false, nil
+		return nil
 	}
 
-	return nil, false, nil
+	return nil
 }
 
 func (self *InboundStackHandler) MapReadWriterSize(

@@ -25,8 +25,8 @@ func (self *OutboundStackHandler001) GetAdditionalBytesSend() int {
 	//return self.data.UpgradedConnection.BytesWrite
 }
 
-func (self *OutboundStackHandler001) ReadMessage(_ interface{}) (interface{}, bool, error) {
-	return nil, false, nil
+func (self *OutboundStackHandler001) ReadMessage(_ interface{}) error {
+	return nil
 }
 
 func (self *OutboundStackHandler001) Close() error {

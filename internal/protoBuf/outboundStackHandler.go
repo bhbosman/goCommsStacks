@@ -30,15 +30,15 @@ func (self *OutboundStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *OutboundStackHandler) ReadMessage(msg interface{}) (interface{}, bool, error) {
+func (self *OutboundStackHandler) ReadMessage(msg interface{}) error {
 	switch v := msg.(type) {
 	case *model2.PublishRxHandlerCounters:
 		for r, i := range self.counterMap {
 			v.AddMapData(fmt.Sprintf("ProtoBuf Outbound %v", r.String()), strconv.Itoa(i))
 		}
-		return nil, false, nil
+		return nil
 	default:
-		return nil, false, nil
+		return nil
 	}
 }
 

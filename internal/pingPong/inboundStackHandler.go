@@ -12,8 +12,8 @@ type InboundStackHandler struct {
 	StackData *Data
 }
 
-func (self *InboundStackHandler) ReadMessage(i interface{}) (interface{}, bool, error) {
-	return nil, false, nil
+func (self *InboundStackHandler) ReadMessage(i interface{}) error {
+	return nil
 }
 
 func (self *InboundStackHandler) MapReadWriterSize(ctx context.Context, unk interface{}) (interface{}, error) {

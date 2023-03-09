@@ -19,8 +19,8 @@ func (self *outboundStackHandler) GetAdditionalBytesSend() int {
 	return self.stackData.GetBytesSend()
 }
 
-func (self *outboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
-	return nil, false, nil
+func (self *outboundStackHandler) ReadMessage(_ interface{}) error {
+	return nil
 }
 
 func (self *outboundStackHandler) Close() error {

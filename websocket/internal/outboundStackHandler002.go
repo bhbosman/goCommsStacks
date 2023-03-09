@@ -24,8 +24,8 @@ func (self *OutboundStackHandler002) GetAdditionalBytesSend() int {
 	return self.stackData.connWrapper.BytesWritten
 }
 
-func (self *OutboundStackHandler002) ReadMessage(_ interface{}) (interface{}, bool, error) {
-	return nil, false, nil
+func (self *OutboundStackHandler002) ReadMessage(_ interface{}) error {
+	return nil
 }
 
 func NewOutboundStackHandler002(stackData *Data) (RxHandlers.IRxNextStackHandler, error) {

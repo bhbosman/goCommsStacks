@@ -16,8 +16,8 @@ type inboundStackHandler struct {
 	currentState OnStateCallback
 }
 
-func (self *inboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
-	return nil, false, nil
+func (self *inboundStackHandler) ReadMessage(_ interface{}) error {
+	return nil
 }
 
 func (self *inboundStackHandler) onReadHeader() OnStateCallback {

@@ -26,8 +26,8 @@ func (self *inboundStackHandler) GetAdditionalBytesSend() int {
 	return self.stackData.UpgradedConnection.BytesRead
 }
 
-func (self *inboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
-	return nil, false, nil
+func (self *inboundStackHandler) ReadMessage(_ interface{}) error {
+	return nil
 }
 
 func (self *inboundStackHandler) Close() error {

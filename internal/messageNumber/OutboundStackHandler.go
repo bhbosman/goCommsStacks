@@ -21,8 +21,8 @@ func (self *OutboundStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *OutboundStackHandler) ReadMessage(_ interface{}) (interface{}, bool, error) {
-	return nil, false, nil
+func (self *OutboundStackHandler) ReadMessage(_ interface{}) error {
+	return nil
 }
 
 func NewOutboundStackHandler() (RxHandlers.IRxMapStackHandler, error) {
