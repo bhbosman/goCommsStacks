@@ -35,7 +35,7 @@ func TestInboundStackHandler_MapReadWriterSizeWithDataAndNoError(t *testing.T) {
 	result, err := stackHandler.MapReadWriterSize(context.Background(), rws)
 	assert.NoError(t, err)
 	sb := strings.Builder{}
-	_, _ = io.Copy(&sb, result)
+	_, _ = io.Copy(&sb, result.(io.Reader))
 	assert.Equal(t, s, sb.String())
 }
 
