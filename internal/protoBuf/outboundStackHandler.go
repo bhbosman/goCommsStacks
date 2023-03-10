@@ -2,9 +2,7 @@ package protoBuf
 
 import (
 	"context"
-	"fmt"
 	proto2 "github.com/bhbosman/goCommsStacks/internal/protoBuf/proto"
-	model2 "github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocommon/stream"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goerrors"
@@ -13,13 +11,10 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/proto"
 	"reflect"
-	"strconv"
 )
 
 type OutboundStackHandler struct {
-	errorState error
-	logger     *zap.Logger
-	counterMap map[reflect.Type]int
+	stackHandler
 }
 
 func (self *OutboundStackHandler) FlatMapHandler(_ context.Context, _ interface{}) (RxHandlers.FlatMapHandlerResult, error) {
@@ -28,18 +23,6 @@ func (self *OutboundStackHandler) FlatMapHandler(_ context.Context, _ interface{
 
 func (self *OutboundStackHandler) ErrorState() error {
 	return self.errorState
-}
-
-func (self *OutboundStackHandler) ReadMessage(msg interface{}) error {
-	switch v := msg.(type) {
-	case *model2.PublishRxHandlerCounters:
-		for r, i := range self.counterMap {
-			v.AddMapData(fmt.Sprintf("ProtoBuf Outbound %v", r.String()), strconv.Itoa(i))
-		}
-		return nil
-	default:
-		return nil
-	}
 }
 
 func (self *OutboundStackHandler) MapReadWriterSize(
@@ -92,15 +75,6 @@ func (self *OutboundStackHandler) MapReadWriterSize(
 	}
 }
 
-func (self *OutboundStackHandler) addCounter(of reflect.Type) {
-	counter, ok := self.counterMap[of]
-	if ok {
-		self.counterMap[of] = counter + 1
-	} else {
-		self.counterMap[of] = 1
-	}
-}
-
 func NewOutboundStackHandler(logger *zap.Logger) (RxHandlers.IRxMapStackHandler, error) {
 	var errList error = nil
 	if logger == nil {
@@ -110,7 +84,11 @@ func NewOutboundStackHandler(logger *zap.Logger) (RxHandlers.IRxMapStackHandler,
 		return nil, errList
 	}
 	return &OutboundStackHandler{
-		logger:     logger,
-		counterMap: make(map[reflect.Type]int),
+		stackHandler: stackHandler{
+			errorState: nil,
+			logger:     logger,
+			counterMap: make(map[reflect.Type]int),
+			prefix:     "Outbound",
+		},
 	}, nil
 }

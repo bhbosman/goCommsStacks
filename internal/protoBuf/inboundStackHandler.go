@@ -2,9 +2,7 @@ package protoBuf
 
 import (
 	"context"
-	"fmt"
 	"github.com/bhbosman/goCommsStacks/internal/protoBuf/proto"
-	model2 "github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocommon/stream"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goerrors"
@@ -13,16 +11,13 @@ import (
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 	"reflect"
-	"strconv"
 )
 
-type InboundStackHandler struct {
-	errorState error
-	logger     *zap.Logger
-	counterMap map[reflect.Type]int
+type inboundStackHandler struct {
+	stackHandler
 }
 
-func (self *InboundStackHandler) FlatMapHandler(ctx context.Context, item interface{}) (RxHandlers.FlatMapHandlerResult, error) {
+func (self *inboundStackHandler) FlatMapHandler(ctx context.Context, item interface{}) (RxHandlers.FlatMapHandlerResult, error) {
 	switch v := item.(type) {
 	case goprotoextra.ReadWriterSize:
 		bytesIn := v.Size()
@@ -76,26 +71,11 @@ func (self *InboundStackHandler) FlatMapHandler(ctx context.Context, item interf
 	}
 }
 
-func (self *InboundStackHandler) ErrorState() error {
+func (self *inboundStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *InboundStackHandler) ReadMessage(i interface{}) error {
-	if self.errorState != nil {
-		return self.errorState
-	}
-	switch v := i.(type) {
-	case *model2.PublishRxHandlerCounters:
-		for r, i := range self.counterMap {
-			v.AddMapData(fmt.Sprintf("ProtoBuf Inbound %v", r.String()), strconv.Itoa(i))
-		}
-		return nil
-	}
-
-	return nil
-}
-
-func (self *InboundStackHandler) MapReadWriterSize(
+func (self *inboundStackHandler) MapReadWriterSize(
 	ctx context.Context,
 	unk interface{},
 ) (interface{}, error) {
@@ -114,15 +94,6 @@ func (self *InboundStackHandler) MapReadWriterSize(
 	}
 }
 
-func (self *InboundStackHandler) addCounter(of reflect.Type) {
-	counter, ok := self.counterMap[of]
-	if ok {
-		self.counterMap[of] = counter + 1
-	} else {
-		self.counterMap[of] = 1
-	}
-}
-
 func NewInboundStackHandler(logger *zap.Logger) (RxHandlers.IRxMapStackHandler, error) {
 	var err error = nil
 	if logger == nil {
@@ -131,9 +102,12 @@ func NewInboundStackHandler(logger *zap.Logger) (RxHandlers.IRxMapStackHandler, 
 	if err != nil {
 		return nil, err
 	}
-	return &InboundStackHandler{
-		errorState: nil,
-		logger:     logger,
-		counterMap: make(map[reflect.Type]int),
+	return &inboundStackHandler{
+		stackHandler: stackHandler{
+			errorState: nil,
+			logger:     logger,
+			counterMap: make(map[reflect.Type]int),
+			prefix:     "Inbound",
+		},
 	}, nil
 }
