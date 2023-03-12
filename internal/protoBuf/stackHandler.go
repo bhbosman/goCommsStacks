@@ -8,6 +8,7 @@ import (
 	"strconv"
 )
 
+// TODO: Create Constructors
 type stackHandler struct {
 	errorState error
 	logger     *zap.Logger
@@ -29,6 +30,8 @@ func (self *stackHandler) ReadMessage(i interface{}) error {
 		return self.errorState
 	}
 	switch v := i.(type) {
+	case *model.ClearCounters:
+		self.counterMap = make(map[reflect.Type]int)
 	case *model.PublishRxHandlerCounters:
 		for r, i := range self.counterMap {
 			v.AddMapData(fmt.Sprintf("ProtoBuf %v %v", self.prefix, r.String()), strconv.Itoa(i))

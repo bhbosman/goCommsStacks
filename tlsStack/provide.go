@@ -45,7 +45,7 @@ func Provide() fx.Option {
 										obs gocommon.IObservable,
 									) (gocommon.IObservable, error) {
 										if sd, ok := stackData.(*internal.Data); ok {
-											NextInBoundChannel := make(chan rxgo.Item)
+											nextChannel := make(chan rxgo.Item)
 											var err error
 											// do not assign sd.inboundHandler.onInBoundComplete to onComplete as this will do a double close
 											// the double close may be handled
@@ -53,7 +53,7 @@ func Provide() fx.Option {
 											sd.InboundHandler, err = RxHandlers.All2(
 												goCommsDefinitions.TlsStackName,
 												model.StreamDirectionUnknown,
-												NextInBoundChannel,
+												nextChannel,
 												params.Logger,
 												params.Ctx,
 												false,
@@ -89,7 +89,7 @@ func Provide() fx.Option {
 												params.GoFunctionCounter,
 												nextHandler,
 												params.Opts...)
-											nextObs := rxgo.FromChannel(NextInBoundChannel, params.Opts...)
+											nextObs := rxgo.FromChannel(nextChannel, params.Opts...)
 											return nextObs, nil
 										}
 										return nil, internal.WrongStackDataError(params.ConnectionType, stackData)
