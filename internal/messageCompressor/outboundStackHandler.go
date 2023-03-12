@@ -21,8 +21,18 @@ type outboundStackHandler struct {
 	errorState        error
 }
 
-func (self *outboundStackHandler) FlatMapHandler(_ context.Context, _ interface{}) (RxHandlers.FlatMapHandlerResult, error) {
-	return RxHandlers.NewFlatMapHandlerResult(true, nil, 0, 0, 0, 0), nil
+func (self *outboundStackHandler) FlatMapHandler(
+	_ context.Context,
+	_ interface{},
+) (RxHandlers.FlatMapHandlerResult, error) {
+	return RxHandlers.NewFlatMapHandlerResult(
+		true,
+		nil,
+		0,
+		0,
+		0,
+		0,
+	), nil
 }
 
 func (self *outboundStackHandler) ErrorState() error {
