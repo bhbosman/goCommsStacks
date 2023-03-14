@@ -65,10 +65,12 @@ func (self *OutboundStackHandler) MapReadWriterSize(
 		return localMarshall(&outData)
 	case goprotoextra.IMessageWrapper:
 		if protoMessage, ok := v.(proto.Message); ok {
+			self.addCounter(reflect.TypeOf(protoMessage))
 			return localMarshall(protoMessage)
 		}
 		return v, nil
 	case proto.Message:
+		self.addCounter(reflect.TypeOf(v))
 		return localMarshall(v)
 	default:
 		return v, nil

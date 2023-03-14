@@ -3,12 +3,12 @@ module github.com/bhbosman/goCommsStacks
 go 1.18
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20230308211643-24fe88b2378e
+	github.com/bhbosman/goCommsDefinitions v0.0.0-20230313180751-41613a6b3173
 	github.com/bhbosman/goMessages v0.0.0-20230302063433-258339efe599
-	github.com/bhbosman/gocommon v0.0.0-20230308114127-b5a97171c205
+	github.com/bhbosman/gocommon v0.0.0-20230312205650-25cf8341f1c9
 	github.com/bhbosman/gocomms v0.0.0-20230307212550-0918a992672c
 	github.com/bhbosman/goerrors v0.0.0-20220623084908-4d7bbcd178cf
-	github.com/bhbosman/gomessageblock v0.0.0-20220617132215-32f430d7de62
+	github.com/bhbosman/gomessageblock v0.0.0-20230308173223-e8144f25444c
 	github.com/bhbosman/goprotoextra v0.0.1
 	github.com/gobwas/ws v1.1.0
 	github.com/reactivex/rxgo/v2 v2.5.0
@@ -21,7 +21,7 @@ require (
 )
 
 require (
-	github.com/bhbosman/goConnectionManager v0.0.0-20230302065222-d613f6fe8f80 // indirect
+	github.com/bhbosman/goConnectionManager v0.0.0-20230312204225-183859f3cef5 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/cskr/pubsub v1.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

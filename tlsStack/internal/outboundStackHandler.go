@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goprotoextra"
 	"io"
@@ -12,16 +13,21 @@ type outboundStackHandler struct {
 	stackData  *Data
 }
 
+func (self *outboundStackHandler) EmptyQueue() {
+}
+
+func (self *outboundStackHandler) ClearCounters() {
+}
+
+func (self *outboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
 func (self *outboundStackHandler) GetAdditionalBytesIncoming() int {
 	return 0
 }
 
 func (self *outboundStackHandler) GetAdditionalBytesSend() int {
 	return self.stackData.ConnWrapper.BytesWritten
-}
-
-func (self *outboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
 }
 
 func (self *outboundStackHandler) Close() error {

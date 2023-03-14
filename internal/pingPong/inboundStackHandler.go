@@ -2,6 +2,7 @@ package pingPong
 
 import (
 	pingpong "github.com/bhbosman/goMessages/pingpong/stream"
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goprotoextra"
 	"golang.org/x/net/context"
@@ -12,8 +13,13 @@ type InboundStackHandler struct {
 	StackData *Data
 }
 
-func (self *InboundStackHandler) ReadMessage(i interface{}) error {
-	return nil
+func (self *InboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
+func (self *InboundStackHandler) EmptyQueue() {
+}
+
+func (self *InboundStackHandler) ClearCounters() {
 }
 
 func (self *InboundStackHandler) MapReadWriterSize(ctx context.Context, unk interface{}) (interface{}, error) {

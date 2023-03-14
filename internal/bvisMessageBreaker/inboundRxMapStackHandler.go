@@ -2,6 +2,7 @@ package bvisMessageBreaker
 
 import (
 	"fmt"
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/gomessageblock"
 	"golang.org/x/net/context"
@@ -9,6 +10,15 @@ import (
 
 type inboundRxMapStackHandler struct {
 	inboundStackHandler
+}
+
+func (self *inboundRxMapStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
+func (self *inboundRxMapStackHandler) EmptyQueue() {
+}
+
+func (self *inboundRxMapStackHandler) ClearCounters() {
 }
 
 func (self *inboundRxMapStackHandler) MapReadWriterSize(ctx context.Context, unk interface{}) (interface{}, error) {

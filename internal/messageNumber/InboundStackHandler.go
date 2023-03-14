@@ -3,6 +3,7 @@ package messageNumber
 import (
 	"context"
 	"encoding/binary"
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goerrors"
 	"github.com/bhbosman/goprotoextra"
@@ -14,16 +15,21 @@ type InboundStackHandler struct {
 	number     uint64
 }
 
+func (self *InboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
+func (self *InboundStackHandler) EmptyQueue() {
+}
+
+func (self *InboundStackHandler) ClearCounters() {
+}
+
 func (self *InboundStackHandler) FlatMapHandler(_ context.Context, _ interface{}) (RxHandlers.FlatMapHandlerResult, error) {
 	return RxHandlers.NewFlatMapHandlerResult(true, nil, 0, 0, 0, 0), nil
 }
 
 func (self *InboundStackHandler) ErrorState() error {
 	return self.errorState
-}
-
-func (self *InboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
 }
 
 func NewInboundStackHandler() (RxHandlers.IRxMapStackHandler, error) {

@@ -1,6 +1,7 @@
 package pingPong
 
 import (
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goerrors"
 	"github.com/bhbosman/goprotoextra"
@@ -11,16 +12,21 @@ type outboundStackHandler struct {
 	stackData  *Data
 }
 
+func (self *outboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
+func (self *outboundStackHandler) EmptyQueue() {
+}
+
+func (self *outboundStackHandler) ClearCounters() {
+}
+
 func (self *outboundStackHandler) GetAdditionalBytesIncoming() int {
 	return 0
 }
 
 func (self *outboundStackHandler) GetAdditionalBytesSend() int {
 	return self.stackData.GetBytesSend()
-}
-
-func (self *outboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
 }
 
 func (self *outboundStackHandler) Close() error {
@@ -41,8 +47,8 @@ func (self *outboundStackHandler) NextReadWriterSize(
 	if self.errorState != nil {
 		return self.errorState
 	}
-	_ = f(rws)
-	return nil
+	return f(rws)
+
 }
 
 func (self *outboundStackHandler) OnComplete() {

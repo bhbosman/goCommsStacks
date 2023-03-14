@@ -16,10 +16,6 @@ type inboundStackHandler struct {
 	currentState OnStateCallback
 }
 
-func (self *inboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
-}
-
 func (self *inboundStackHandler) onReadHeader() OnStateCallback {
 	return func(onNext func(data *gomessageblock.ReaderWriter) error) (bool, error) {
 		if self.rw.Size() >= 4 {

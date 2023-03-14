@@ -4,6 +4,7 @@ import (
 	"compress/flate"
 	"context"
 	"encoding/binary"
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goerrors"
 	"github.com/bhbosman/gomessageblock"
@@ -19,6 +20,15 @@ type outboundStackHandler struct {
 	compression       *flate.Writer
 	compressionMutex  *sync.Mutex
 	errorState        error
+}
+
+func (self *outboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
+func (self *outboundStackHandler) EmptyQueue() {
+}
+
+func (self *outboundStackHandler) ClearCounters() {
 }
 
 func (self *outboundStackHandler) FlatMapHandler(
@@ -37,10 +47,6 @@ func (self *outboundStackHandler) FlatMapHandler(
 
 func (self *outboundStackHandler) ErrorState() error {
 	return self.errorState
-}
-
-func (self *outboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
 }
 
 func NewOutboundStackHandler() (RxHandlers.IRxMapStackHandler, error) {

@@ -2,6 +2,7 @@ package internal
 
 import (
 	wsmsg2 "github.com/bhbosman/goCommsStacks/webSocketMessages/wsmsg"
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocommon/stream"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/gomessageblock"
@@ -16,16 +17,21 @@ type OutboundStackHandler002 struct {
 	stackData  *Data
 }
 
+func (self *OutboundStackHandler002) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
+func (self *OutboundStackHandler002) EmptyQueue() {
+}
+
+func (self *OutboundStackHandler002) ClearCounters() {
+}
+
 func (self *OutboundStackHandler002) GetAdditionalBytesIncoming() int {
 	return -self.stackData.additionalDataSend
 }
 
 func (self *OutboundStackHandler002) GetAdditionalBytesSend() int {
 	return self.stackData.connWrapper.BytesWritten
-}
-
-func (self *OutboundStackHandler002) ReadMessage(_ interface{}) error {
-	return nil
 }
 
 func NewOutboundStackHandler002(stackData *Data) (RxHandlers.IRxNextStackHandler, error) {

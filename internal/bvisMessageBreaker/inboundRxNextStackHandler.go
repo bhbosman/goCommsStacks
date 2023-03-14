@@ -1,6 +1,7 @@
 package bvisMessageBreaker
 
 import (
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/gomessageblock"
 	"github.com/bhbosman/goprotoextra"
@@ -9,6 +10,15 @@ import (
 // Deprecated: Use inboundRxMapStackHandler. Trying to work out all map usage
 type inboundRxNextStackHandler struct {
 	inboundStackHandler
+}
+
+func (self *inboundRxNextStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
+func (self *inboundRxNextStackHandler) EmptyQueue() {
+}
+
+func (self *inboundRxNextStackHandler) ClearCounters() {
 }
 
 func (self *inboundRxNextStackHandler) GetAdditionalBytesIncoming() int {

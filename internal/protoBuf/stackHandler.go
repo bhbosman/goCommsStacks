@@ -16,6 +16,19 @@ type stackHandler struct {
 	prefix     string
 }
 
+func (self *stackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+	for r, i := range self.counterMap {
+		counters.AddMapData(fmt.Sprintf("ProtoBuf %v %v", self.prefix, r.String()), strconv.Itoa(i))
+	}
+}
+
+func (self *stackHandler) EmptyQueue() {
+}
+
+func (self *stackHandler) ClearCounters() {
+	self.counterMap = make(map[reflect.Type]int)
+}
+
 func (self *stackHandler) addCounter(of reflect.Type) {
 	counter, ok := self.counterMap[of]
 	if ok {
@@ -23,20 +36,4 @@ func (self *stackHandler) addCounter(of reflect.Type) {
 	} else {
 		self.counterMap[of] = 1
 	}
-}
-
-func (self *stackHandler) ReadMessage(i interface{}) error {
-	if self.errorState != nil {
-		return self.errorState
-	}
-	switch v := i.(type) {
-	case *model.ClearCounters:
-		self.counterMap = make(map[reflect.Type]int)
-	case *model.PublishRxHandlerCounters:
-		for r, i := range self.counterMap {
-			v.AddMapData(fmt.Sprintf("ProtoBuf %v %v", self.prefix, r.String()), strconv.Itoa(i))
-		}
-		return nil
-	}
-	return nil
 }

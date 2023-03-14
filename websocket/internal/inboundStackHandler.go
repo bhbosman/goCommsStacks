@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goprotoextra"
 	"io"
@@ -9,6 +10,15 @@ import (
 type InboundStackHandler struct {
 	errorState error
 	stackData  *Data
+}
+
+func (self *InboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+}
+
+func (self *InboundStackHandler) EmptyQueue() {
+}
+
+func (self *InboundStackHandler) ClearCounters() {
 }
 
 func (self *InboundStackHandler) GetAdditionalBytesIncoming() int {
@@ -23,10 +33,6 @@ func (self *InboundStackHandler) SendError(err error) {
 
 func (self *InboundStackHandler) GetAdditionalBytesSend() int {
 	return self.stackData.socketDataReceived
-}
-
-func (self *InboundStackHandler) ReadMessage(_ interface{}) error {
-	return nil
 }
 
 func (self *InboundStackHandler) sendRws(rws goprotoextra.ReadWriterSize) {
