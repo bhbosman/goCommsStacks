@@ -64,7 +64,7 @@ func (self *inboundStackHandler) FlatMapHandler(ctx context.Context, item interf
 			}
 		} else {
 			self.addCounter(reflect.TypeOf(item))
-			return RxHandlers.NewFlatMapHandlerResult(true, nil, 0, 0, 0, 0), nil
+			return RxHandlers.NewFlatMapHandlerResult(true, nil, 1, 0, 0, 0), nil
 		}
 	default:
 		return RxHandlers.NewFlatMapHandlerResult(true, nil, 0, 0, 0, 0), nil
