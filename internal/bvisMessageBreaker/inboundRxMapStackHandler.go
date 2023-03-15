@@ -12,11 +12,7 @@ type inboundRxMapStackHandler struct {
 	inboundStackHandler
 }
 
-func (self *inboundRxMapStackHandler) Close() error {
-	return nil
-}
-
-func (self *inboundRxMapStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+func (self *inboundRxMapStackHandler) PublishCounters(_ *model.PublishRxHandlerCounters) {
 }
 
 func (self *inboundRxMapStackHandler) EmptyQueue() {
@@ -25,7 +21,7 @@ func (self *inboundRxMapStackHandler) EmptyQueue() {
 func (self *inboundRxMapStackHandler) ClearCounters() {
 }
 
-func (self *inboundRxMapStackHandler) MapReadWriterSize(ctx context.Context, unk interface{}) (interface{}, error) {
+func (self *inboundRxMapStackHandler) MapReadWriterSize(_ context.Context, _ interface{}) (interface{}, error) {
 	return nil, fmt.Errorf("not implemented. use FlatMapHandler")
 }
 
@@ -33,7 +29,7 @@ func (self *inboundRxMapStackHandler) ErrorState() error {
 	return self.errorState
 }
 
-func (self *inboundRxMapStackHandler) FlatMapHandler(ctx context.Context, item interface{}) (RxHandlers.FlatMapHandlerResult, error) {
+func (self *inboundRxMapStackHandler) FlatMapHandler(_ context.Context, item interface{}) (RxHandlers.FlatMapHandlerResult, error) {
 	switch v := item.(type) {
 	case *gomessageblock.ReaderWriter:
 		err := self.rw.SetNext(v)

@@ -15,11 +15,7 @@ type InboundStackHandler struct {
 	number     uint64
 }
 
-func (self *InboundStackHandler) Close() error {
-	return nil
-}
-
-func (self *InboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+func (self *InboundStackHandler) PublishCounters(*model.PublishRxHandlerCounters) {
 }
 
 func (self *InboundStackHandler) EmptyQueue() {

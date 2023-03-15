@@ -15,11 +15,7 @@ type OutboundStackHandler struct {
 	errorState     error
 }
 
-func (self *OutboundStackHandler) Close() error {
-	return nil
-}
-
-func (self *OutboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+func (self *OutboundStackHandler) PublishCounters(*model.PublishRxHandlerCounters) {
 }
 
 func (self *OutboundStackHandler) EmptyQueue() {
@@ -28,7 +24,7 @@ func (self *OutboundStackHandler) EmptyQueue() {
 func (self *OutboundStackHandler) ClearCounters() {
 }
 
-func (self *OutboundStackHandler) FlatMapHandler(ctx context.Context, item interface{}) (RxHandlers.FlatMapHandlerResult, error) {
+func (self *OutboundStackHandler) FlatMapHandler(context.Context, interface{}) (RxHandlers.FlatMapHandlerResult, error) {
 	return RxHandlers.NewFlatMapHandlerResult(true, nil, 0, 0, 0, 0), nil
 }
 

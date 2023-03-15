@@ -22,11 +22,7 @@ type inboundStackHandler struct {
 	errorState         error
 }
 
-func (self *inboundStackHandler) Close() error {
-	return nil
-}
-
-func (self *inboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+func (self *inboundStackHandler) PublishCounters(*model.PublishRxHandlerCounters) {
 }
 
 func (self *inboundStackHandler) EmptyQueue() {

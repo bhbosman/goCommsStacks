@@ -13,11 +13,7 @@ type InboundStackHandler struct {
 	StackData *Data
 }
 
-func (self *InboundStackHandler) Close() error {
-	return nil
-}
-
-func (self *InboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+func (self *InboundStackHandler) PublishCounters(*model.PublishRxHandlerCounters) {
 }
 
 func (self *InboundStackHandler) EmptyQueue() {
@@ -26,7 +22,7 @@ func (self *InboundStackHandler) EmptyQueue() {
 func (self *InboundStackHandler) ClearCounters() {
 }
 
-func (self *InboundStackHandler) MapReadWriterSize(ctx context.Context, unk interface{}) (interface{}, error) {
+func (self *InboundStackHandler) MapReadWriterSize(_ context.Context, unk interface{}) (interface{}, error) {
 	switch rws := unk.(type) {
 	case goprotoextra.IReadWriterSize:
 		return rws, nil

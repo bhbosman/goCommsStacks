@@ -17,11 +17,7 @@ type inboundStackHandler struct {
 	stackHandler
 }
 
-func (self *inboundStackHandler) Close() error {
-	return nil
-}
-
-func (self *inboundStackHandler) FlatMapHandler(ctx context.Context, item interface{}) (RxHandlers.FlatMapHandlerResult, error) {
+func (self *inboundStackHandler) FlatMapHandler(_ context.Context, item interface{}) (RxHandlers.FlatMapHandlerResult, error) {
 	switch v := item.(type) {
 	case goprotoextra.ReadWriterSize:
 		bytesIn := v.Size()
