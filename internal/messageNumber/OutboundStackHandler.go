@@ -14,6 +14,10 @@ type OutboundStackHandler struct {
 	number     uint64
 }
 
+func (self *OutboundStackHandler) Close() error {
+	return nil
+}
+
 func (self *OutboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
 }
 

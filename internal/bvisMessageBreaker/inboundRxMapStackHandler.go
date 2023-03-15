@@ -12,6 +12,10 @@ type inboundRxMapStackHandler struct {
 	inboundStackHandler
 }
 
+func (self *inboundRxMapStackHandler) Close() error {
+	return nil
+}
+
 func (self *inboundRxMapStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
 }
 

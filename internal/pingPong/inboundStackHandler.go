@@ -13,6 +13,10 @@ type InboundStackHandler struct {
 	StackData *Data
 }
 
+func (self *InboundStackHandler) Close() error {
+	return nil
+}
+
 func (self *InboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
 }
 

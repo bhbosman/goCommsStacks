@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"context"
 	"github.com/bhbosman/gocommon/model"
 	"github.com/bhbosman/gocomms/RxHandlers"
 	"github.com/bhbosman/goprotoextra"
@@ -19,17 +18,11 @@ func (self *inboundStackHandler) EmptyQueue() {
 func (self *inboundStackHandler) ClearCounters() {
 }
 
-func (self *inboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
+func (self *inboundStackHandler) PublishCounters(*model.PublishRxHandlerCounters) {
 }
 
 func (self *inboundStackHandler) GetAdditionalBytesIncoming() int {
 	return 0
-}
-
-func (self *inboundStackHandler) SendError(err error) {
-	if self.stackData.InboundHandler != nil {
-		self.stackData.InboundHandler.OnError(err)
-	}
 }
 
 func (self *inboundStackHandler) GetAdditionalBytesSend() int {
@@ -38,12 +31,6 @@ func (self *inboundStackHandler) GetAdditionalBytesSend() int {
 
 func (self *inboundStackHandler) Close() error {
 	return self.stackData.Close()
-}
-
-func (self *inboundStackHandler) SendData(data interface{}) {
-	if self.stackData.InboundHandler != nil {
-		self.stackData.InboundHandler.OnSendData(data)
-	}
 }
 
 func (self *inboundStackHandler) SendRws(
@@ -82,16 +69,7 @@ func (self *inboundStackHandler) OnComplete() {
 	}
 }
 
-func (self *inboundStackHandler) Complete() {
-
-}
-
-func NewInboundStackHandler(
-	stackData *Data,
-	parentContext context.Context,
-	parentCancelFunc context.CancelFunc,
-) (RxHandlers.IRxNextStackHandler, error) {
-	//cancel, cancelFunc := context.WithCancel(parentContext)
+func NewInboundStackHandler(stackData *Data) (RxHandlers.IRxNextStackHandler, error) {
 	return &inboundStackHandler{
 		stackData: stackData,
 	}, nil

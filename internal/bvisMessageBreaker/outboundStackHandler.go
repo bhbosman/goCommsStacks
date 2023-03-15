@@ -15,6 +15,10 @@ type OutboundStackHandler struct {
 	errorState     error
 }
 
+func (self *OutboundStackHandler) Close() error {
+	return nil
+}
+
 func (self *OutboundStackHandler) PublishCounters(counters *model.PublishRxHandlerCounters) {
 }
 

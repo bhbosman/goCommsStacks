@@ -17,6 +17,10 @@ type OutboundStackHandler struct {
 	stackHandler
 }
 
+func (self *OutboundStackHandler) Close() error {
+	return nil
+}
+
 func (self *OutboundStackHandler) FlatMapHandler(_ context.Context, _ interface{}) (RxHandlers.FlatMapHandlerResult, error) {
 	return RxHandlers.NewFlatMapHandlerResult(true, nil, 0, 0, 0, 0), nil
 }

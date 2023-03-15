@@ -62,11 +62,7 @@ func Provide() fx.Option {
 												return nil, err
 											}
 
-											inboundStackHandlerInstance, err := internal.NewInboundStackHandler(
-												sd,
-												params.Ctx,
-												params.CtxCancelFunc,
-											)
+											inboundStackHandlerInstance, err := internal.NewInboundStackHandler(sd)
 											if err != nil {
 												return nil, err
 											}
