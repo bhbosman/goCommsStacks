@@ -14,13 +14,14 @@ require (
 	github.com/reactivex/rxgo/v2 v2.5.0
 	github.com/stretchr/testify v1.8.0
 	go.uber.org/fx v1.19.2
-	go.uber.org/multierr v1.6.0
+	go.uber.org/multierr v1.10.0
 	go.uber.org/zap v1.23.0
 	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
 	google.golang.org/protobuf v1.28.0
 )
 
 require (
+	github.com/bhbosman/goConn v0.0.0-20230317045429-06adbb778ab7 // indirect
 	github.com/bhbosman/goConnectionManager v0.0.0-20230312204225-183859f3cef5 // indirect
 	github.com/cenkalti/backoff/v4 v4.1.1 // indirect
 	github.com/cskr/pubsub v1.0.2 // indirect

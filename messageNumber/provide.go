@@ -15,15 +15,11 @@ import (
 func Provide() fx.Option {
 	return fx.Options(
 		fx.Provide(
-			fx.Annotated{
-				Group: "StackDefinition",
-				Target: func(
-					params struct {
-						fx.In
-						ConnectionCancelFunc model.ConnectionCancelFunc
-						Opts                 []rxgo.Option
-						Logger               *zap.Logger
-					},
+			fx.Annotate(
+				func(
+					ConnectionCancelFunc model.ConnectionCancelFunc,
+					Opts []rxgo.Option,
+					Logger *zap.Logger,
 				) (common.IStackDefinition, error) {
 					return common.NewStackDefinition(
 						goCommsDefinitions.MessageNumberStackName,
@@ -37,15 +33,15 @@ func Provide() fx.Option {
 
 									mapHandler, err := RxHandlers.NewRxMapHandler(
 										goCommsDefinitions.MessageNumberStackName,
-										params.ConnectionCancelFunc,
-										params.Logger,
+										ConnectionCancelFunc,
+										Logger,
 										stackHandler,
 									)
 									if err != nil {
 										return nil, err
 									}
 
-									return obs.Map(mapHandler.Handler, params.Opts...), nil
+									return obs.Map(mapHandler.Handler, Opts...), nil
 								}, nil), nil
 						},
 						func() (common.IStackBoundFactory, error) {
@@ -58,15 +54,15 @@ func Provide() fx.Option {
 
 										mapHandler, err := RxHandlers.NewRxMapHandler(
 											goCommsDefinitions.MessageNumberStackName,
-											params.ConnectionCancelFunc,
-											params.Logger,
+											ConnectionCancelFunc,
+											Logger,
 											stackHandler,
 										)
 										if err != nil {
 											return nil, err
 										}
 
-										return obs.Map(mapHandler.Handler, params.Opts...), nil
+										return obs.Map(mapHandler.Handler, Opts...), nil
 									},
 									nil),
 								nil
@@ -74,7 +70,8 @@ func Provide() fx.Option {
 						nil,
 					)
 				},
-			},
+				fx.ResultTags(`group:"StackDefinition"`),
+			),
 		),
 	)
 }
