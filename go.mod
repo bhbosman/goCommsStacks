@@ -3,7 +3,7 @@ module github.com/bhbosman/goCommsStacks
 go 1.18
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20230313180751-41613a6b3173
+	//github.com/bhbosman/goCommsDefinitions v0.0.0-20230313180751-41613a6b3173
 	github.com/bhbosman/goMessages v0.0.0-20230302063433-258339efe599
 	github.com/bhbosman/gocommon v0.0.0-20230320083256-4088c43f62a7
 	github.com/bhbosman/gocomms v0.0.0-20230307212550-0918a992672c
@@ -44,7 +44,7 @@ replace github.com/bhbosman/gocommon => ../gocommon
 
 replace github.com/bhbosman/gocomms => ../gocomms
 
-replace github.com/bhbosman/goCommsDefinitions => ../goCommsDefinitions
+//replace github.com/bhbosman/goCommsDefinitions => ../goCommsDefinitions
 
 replace github.com/golang/mock => github.com/bhbosman/gomock v1.6.1-0.20230302060806-d02c40b7514e
 
