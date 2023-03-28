@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/bhbosman/goCommsDefinitions v0.0.0-20230313180751-41613a6b3173
 	github.com/bhbosman/goMessages v0.0.0-20230302063433-258339efe599
-	github.com/bhbosman/gocommon v0.0.0-20230328205958-d21444a729d1
+	github.com/bhbosman/gocommon v0.0.0-20230328220050-dafaab862dd2
 	github.com/bhbosman/gocomms v0.0.0-20230307212550-0918a992672c
 	github.com/bhbosman/goerrors v0.0.0-20220623084908-4d7bbcd178cf
 	github.com/bhbosman/gomessageblock v0.0.0-20230308173223-e8144f25444c
@@ -48,7 +48,7 @@ replace github.com/cskr/pubsub => github.com/bhbosman/pubsub v1.0.3-0.2022080220
 
 replace github.com/rivo/tview => github.com/bhbosman/tview v0.0.0-20230310100135-f8b257a85d36
 
-//replace github.com/bhbosman/gocommon => ../gocommon
+
 
 replace github.com/bhbosman/gocomms => ../gocomms
 
