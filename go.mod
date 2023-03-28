@@ -9,7 +9,7 @@ require (
 	github.com/bhbosman/gocomms v0.0.0-20230307212550-0918a992672c
 	github.com/bhbosman/goerrors v0.0.0-20220623084908-4d7bbcd178cf
 	github.com/bhbosman/gomessageblock v0.0.0-20230308173223-e8144f25444c
-	github.com/bhbosman/goprotoextra v0.0.1
+	github.com/bhbosman/goprotoextra v0.0.2
 	github.com/gobwas/ws v1.1.0
 	github.com/reactivex/rxgo/v2 v2.5.0
 	github.com/stretchr/testify v1.8.0
