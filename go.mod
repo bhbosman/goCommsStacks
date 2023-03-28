@@ -50,7 +50,7 @@ replace github.com/golang/mock => github.com/bhbosman/gomock v1.6.1-0.2023030206
 
 replace github.com/bhbosman/goConnectionManager => ../goConnectionManager
 
-replace github.com/bhbosman/goprotoextra => ../goprotoextra
+//replace github.com/bhbosman/goprotoextra => ../goprotoextra
 
 replace github.com/bhbosman/goMessages => ../goMessages
 
