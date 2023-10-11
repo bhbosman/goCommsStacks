@@ -16,7 +16,7 @@ require (
 	go.uber.org/fx v1.19.2
 	go.uber.org/multierr v1.10.0
 	go.uber.org/zap v1.24.0
-	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f
+	golang.org/x/net v0.0.0-20211019232329-c6ed85c7a12d
 	google.golang.org/protobuf v1.28.0
 )
 
