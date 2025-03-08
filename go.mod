@@ -6,7 +6,7 @@ require (
 	github.com/bhbosman/goCommsDefinitions v0.0.0-20250308144130-64993b60920c
 	github.com/bhbosman/goMessages v0.0.0-20250308195913-e5a0f4425dd4
 	github.com/bhbosman/gocommon v0.0.0-20250308194442-9c45d7859806
-	github.com/bhbosman/gocomms v0.0.0-20250308192115-8af5b0178806
+	github.com/bhbosman/gocomms v0.0.0-20250308201104-6179c9241408
 	github.com/bhbosman/goerrors v0.0.0-20250307194237-312d070c8e38
 	github.com/bhbosman/gomessageblock v0.0.0-20250308073733-0b3daca12e3a
 	github.com/bhbosman/goprotoextra v0.0.2
@@ -21,7 +21,7 @@ require (
 )
 
 require (
-	github.com/bhbosman/goConnectionManager v0.0.0-20250308194756-b3c21d488492 // indirect
+	github.com/bhbosman/goConnectionManager v0.0.0-20250308201033-1df6054ada09 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cskr/pubsub v1.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
