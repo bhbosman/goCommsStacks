@@ -43,6 +43,8 @@ github.com/bhbosman/goMessages v0.0.0-20250308134004-88a683243000 h1:u6Z9R5Yx1KM
 github.com/bhbosman/goMessages v0.0.0-20250308134004-88a683243000/go.mod h1:iiKYP6sCWaGji62TJ6mZzXzXO+WPq3Yym3OR+PSxIL4=
 github.com/bhbosman/goMessages v0.0.0-20250308162234-471970cb97be h1:oti4DAnZw4pkG9GZoUkCfPf2EM/VH5Otc+YGWO3+pTk=
 github.com/bhbosman/goMessages v0.0.0-20250308162234-471970cb97be/go.mod h1:fSP2KuTwiAD1N3WM/hVVVhVXgeNkPDjSl29QAR5hyHM=
+github.com/bhbosman/goMessages v0.0.0-20250308195913-e5a0f4425dd4 h1:3txFoBwkO+rR7jfnP4iOufexBI2IIySs4XyO7AbNfQ0=
+github.com/bhbosman/goMessages v0.0.0-20250308195913-e5a0f4425dd4/go.mod h1:ECFbW2YswBpaWYGZtl+D7iBUlY/03Y/eFpS4k+4bLnQ=
 github.com/bhbosman/gocommon v0.0.0-20250307235859-f370cb0a3bac h1:YSi40G49TVma+rDrJFudBQO5wE43T/ErFX6zMKgB3mY=
 github.com/bhbosman/gocommon v0.0.0-20250307235859-f370cb0a3bac/go.mod h1:EPYuWdqTCX8B9u0Q7w4u4FOalx2wbXm+KFQQbS1VHOo=
 github.com/bhbosman/gocommon v0.0.0-20250308052839-0ebeb121f996 h1:J4LPhDOOJ/tIJscYU6vNy2V1CzVflIHTJMYdN9gtGqg=
@@ -55,6 +57,8 @@ github.com/bhbosman/gocommon v0.0.0-20250308150148-56b7e6e14bff h1:lDqy+h+pbnVXR
 github.com/bhbosman/gocommon v0.0.0-20250308150148-56b7e6e14bff/go.mod h1:X1Vckq6MxT7Ozn4fMsUKXkgEgggnsBGs+HX9SWzl+Tk=
 github.com/bhbosman/gocommon v0.0.0-20250308155359-4baa9bec452e h1:92bvDBFSfI/1z0wJf1xgNFwRTAtQ/uPzU6SBtCwDsmo=
 github.com/bhbosman/gocommon v0.0.0-20250308155359-4baa9bec452e/go.mod h1:MgvoWc5dg34pZhFPxwkiw8QBQjYRG8Vg8SQ87+pmYXo=
+github.com/bhbosman/gocommon v0.0.0-20250308194442-9c45d7859806 h1:UY4tohCOOiGouZ1C3MR98IwG0vNHHbSLdHbKY7fo5TA=
+github.com/bhbosman/gocommon v0.0.0-20250308194442-9c45d7859806/go.mod h1:5j0NXbFNZkcrjThbwXWAHy/i2Zuyhke+mzsoLAuBrJs=
 github.com/bhbosman/gocomms v0.0.0-20230730212408-04ba72ddb372 h1:EtHAc7ZaA2BQm9jPwtVkSAnvsEyRsaU2K1MWd8B+gJE=
 github.com/bhbosman/gocomms v0.0.0-20230730212408-04ba72ddb372/go.mod h1:fu54TNrH3gXEbr9FjdWpb1jQ3V1PEqlZ0o4Dqlj65HQ=
 github.com/bhbosman/gocomms v0.0.0-20250308000247-0dafbc2926a9 h1:/BmfEj0hapFf8jDW1yZ0ePcHjVNysBmxwcWQVE/zPBY=
