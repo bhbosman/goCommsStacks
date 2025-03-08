@@ -27,6 +27,8 @@ github.com/bhbosman/goMessages v0.0.0-20250308073939-6ddcbe007f00 h1:atF5Fi1k1DL
 github.com/bhbosman/goMessages v0.0.0-20250308073939-6ddcbe007f00/go.mod h1:nnA/nGfLfAgOa2dg59slhWLFJhDBJMBl5/UzxT7agk8=
 github.com/bhbosman/goMessages v0.0.0-20250308122654-32a88d6d1169 h1:sL7gvyo2egE1FI+8WRCh5g4Wo6pmsooHBTg7Uq/btkg=
 github.com/bhbosman/goMessages v0.0.0-20250308122654-32a88d6d1169/go.mod h1:PhVe9v+WIuyuyxE9HIfMRA3LkrJtrrETnlLToz1VGWI=
+github.com/bhbosman/goMessages v0.0.0-20250308134004-88a683243000 h1:u6Z9R5Yx1KMsoiyknh2srDfIJu2r1V5VlhILgfoFuvM=
+github.com/bhbosman/goMessages v0.0.0-20250308134004-88a683243000/go.mod h1:iiKYP6sCWaGji62TJ6mZzXzXO+WPq3Yym3OR+PSxIL4=
 github.com/bhbosman/gocommon v0.0.0-20250307235859-f370cb0a3bac h1:YSi40G49TVma+rDrJFudBQO5wE43T/ErFX6zMKgB3mY=
 github.com/bhbosman/gocommon v0.0.0-20250307235859-f370cb0a3bac/go.mod h1:EPYuWdqTCX8B9u0Q7w4u4FOalx2wbXm+KFQQbS1VHOo=
 github.com/bhbosman/gocommon v0.0.0-20250308052839-0ebeb121f996 h1:J4LPhDOOJ/tIJscYU6vNy2V1CzVflIHTJMYdN9gtGqg=
