@@ -3,7 +3,7 @@ module github.com/bhbosman/goCommsStacks
 go 1.24.0
 
 require (
-	github.com/bhbosman/goCommsDefinitions v0.0.0-20250308000247-4306925b3dfd
+	github.com/bhbosman/goCommsDefinitions v0.0.0-20250308074916-3e7c0d32b971
 	github.com/bhbosman/goMessages v0.0.0-20250308073939-6ddcbe007f00
 	github.com/bhbosman/gocommon v0.0.0-20250308071735-43b385b00819
 	github.com/bhbosman/gocomms v0.0.0-20250308073453-53d6befb6d1a
