@@ -7,8 +7,8 @@ toolchain go1.24.0
 require (
 	github.com/bhbosman/goCommsDefinitions v0.0.0-20250308000247-4306925b3dfd
 	github.com/bhbosman/goMessages v0.0.0-20250307224348-83ddb4c19467
-	github.com/bhbosman/gocommon v0.0.0-20250307235859-f370cb0a3bac
-	github.com/bhbosman/gocomms v0.0.0-20230730212408-04ba72ddb372
+	github.com/bhbosman/gocommon v0.0.0-20250308052839-0ebeb121f996
+	github.com/bhbosman/gocomms v0.0.0-20250308000247-0dafbc2926a9
 	github.com/bhbosman/goerrors v0.0.0-20250307194237-312d070c8e38
 	github.com/bhbosman/gomessageblock v0.0.0-20250307141417-ab783e8e2eba
 	github.com/bhbosman/goprotoextra v0.0.2
